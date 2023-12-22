@@ -16,7 +16,7 @@ export const TaskProvider = ({ children }) => {
   // Default create db if not exist
   useEffect(() => {
     db.transaction((tx) => {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, task_name TEXT, task_details TEXT, pending BOOLEAN)')
+      tx.executeSql('CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, task_name TEXT, task_details TEXT, pending BOOLEAN, date TEXT, time TEXT)')
     })
 
     db.transaction(tx =>{
@@ -44,13 +44,15 @@ export const TaskProvider = ({ children }) => {
 
   
   const CreateTask = (props) => {
-    const {taskName, taskDetails, navigation} = props;
+    const {taskName, taskDetails, date, time, navigation} = props;
 
+    console.log(taskName, taskDetails, date , time);
 
     // console.log(props);
+    console.log(tasks);
     try{
       db.transaction( (tx) => {
-        tx.executeSql(`INSERT INTO tasks(task_name,task_details, pending) VALUES (?, ?, ?)`, [taskName, taskDetails, true])
+        tx.executeSql(`INSERT INTO tasks(task_name,task_details, pending, date, time) VALUES (?, ?, ?, ?, ?)`, [taskName, taskDetails, true, date, time])
       })
 
       fetchTask()

@@ -1,39 +1,64 @@
 import { AntDesign } from '@expo/vector-icons';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { TaskContext } from '../../context/TaskProvider';
 
 export default function Create({navigation}) {
+  
+  const [date, setDate] = useState(new Date());
 
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [dateNtime, setdateNtime] = useState({})
+
+  // function to get date and time
+  const getDateAndTime = () =>{
+    let selectedDate = date.toLocaleDateString();
+    let is24hr = date.getHours() < 12 ? "AM" : "PM";
+    let time = date.toLocaleTimeString().slice(0,4);
+    console.log(date.toLocaleTimeString());
+    let seletedTime = time + " " + is24hr;
+
+    setdateNtime({
+      date : selectedDate,
+      time : seletedTime
+    })
+
+  }
+
+  useEffect(() => {
+    getDateAndTime()
+  }, [date])
+  
+  // Local states
   const [taskName, settaskName] = useState("");
   const [taskDetails, settaskDetails] = useState("")
 
+  // Get function form global state
   const {CreateTask} = useContext(TaskContext)
 
-    const onChange = (event, selectedDate) => {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-    };
-  
-    const showMode = (currentMode) => {
-      DateTimePickerAndroid.open({
-        value: date,
-        onChange,
-        mode: currentMode,
-        is24Hour: false,
-      });
-    };
 
-  
-    const showDatepicker = () => {
-      showMode('date')
-    };
+  // Date and time picker functions
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
 
-    const showTimepicker = () => {
-      showMode('time')
-    };
+  const showMode = (currentMode) => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: currentMode,
+      is24Hour: false,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
 
 
   return (
@@ -65,7 +90,7 @@ export default function Create({navigation}) {
               <AntDesign name="calendar" size={24} color="teal" />
             </TouchableOpacity>
             
-            <Text style={{color:'gray'}}>16-06-2023</Text>
+            <Text style={{color:'gray'}}>{dateNtime?.date}</Text>
 
           </View>
 
@@ -76,13 +101,14 @@ export default function Create({navigation}) {
               <AntDesign name="clockcircleo" size={24} color="teal"/>
             </TouchableOpacity>
 
-            <Text style={{color:'gray'}}>1:45 PM</Text>
+            <Text style={{color:'gray'}}>{dateNtime?.time}</Text>
+            
           </View>
         </View>
 
         <TouchableOpacity 
           style={styles.saveBtn}
-          onPress={() => CreateTask({navigation,taskName, taskDetails})}
+          onPress={() => CreateTask({navigation,taskName, taskDetails, date:dateNtime.date, time:dateNtime.time})}
           >
           <Text style={styles.saveText}>Save</Text>
         </TouchableOpacity>

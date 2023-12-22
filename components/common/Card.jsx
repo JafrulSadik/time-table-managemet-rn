@@ -9,11 +9,24 @@ export default function Card(props) {
     const {item, navigation} = props;
     const [checked, setChecked] = useState(false);
     const {DeleteTask, CompletedTask} = useContext(TaskContext)
+
+    const date = item.date;
+
+    const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+    const dateArray = date.split('/');
+
+    const selectedMonthName = months[dateArray[0]-1]
+
+    console.log(selectedMonthName);
+    
+
     return (
         <View style={styles.cardBody}>
             <View style={styles.date}>
-                <Text style={{color:'coral', fontSize: 18}}>12</Text>
-                <Text style={{color:'gray', fontSize: 12}}>Jul</Text>
+                <Text style={{color:'coral', fontSize: 18}}>{dateArray[1]}</Text>
+                <Text style={{color:'gray', fontSize: 12}}>{selectedMonthName}</Text>
             </View>
 
             <View style={styles.details}>
@@ -23,7 +36,7 @@ export default function Card(props) {
                     <Text style={[styles.task_name, !item.pending && styles.completed]}>{item?.task_name}</Text>
                 </TouchableOpacity>
                 <View>
-                    <Text style={[{fontSize:12, color:'gray'}, !item.pending && styles.completed]}>Today at 1:27 AM - 4:00 PM</Text>
+                    <Text style={[{fontSize:12, color:'gray'}, !item.pending && styles.completed]}>{date + ", " + item.time }</Text>
                 </View>
             </View>
 

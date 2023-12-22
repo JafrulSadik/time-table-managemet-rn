@@ -26,45 +26,13 @@ export default function Details({navigation,route}) {
               </View>
               <View style={styles.hr}></View>
               <View style={styles.detailsDiv}>
-                <Text style={styles.dateTime}>No date and time selected!</Text>
+                <Text style={styles.dateTime}>{task.date + ", " + task.time}</Text>
                 <Text style={styles.detailsTitle}>{task?.task_details}</Text>
               </View>
             </View>
 
-            {/* <TouchableOpacity 
-                style={styles.deleteBtn}
-                onPress={showModal}
-                >
-                <Text style={styles.deleteText}>Delete</Text>
-              </TouchableOpacity> */}
-
           </View>
 
-        
-          {/* <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalStyle}>
-            <View>
-              <View style={styles.modalTop}>
-              <MaterialCommunityIcons name="delete-circle-outline" size={40} color="red" />
-                <Text style={{fontWeight: '400', color: 'red', fontSize: 20}}>Are you sure?</Text>
-              </View>
-              <View style={styles.hr1}></View>
-              <View style={styles.modalBottom}>
-                <TouchableOpacity 
-                  style={styles.cancelAltBtn}
-                  onPress={()=>hideModal()}
-                  >
-                  <Text style={{color: 'steelblue', fontWeight: '500'}}>Cancel</Text>
-                </TouchableOpacity>
-                
-                <TouchableOpacity 
-                  style={styles.deleteAltBtn}
-                  onPress={()=>DeleteTask({task, navigation})}
-                  >
-                  <Text style={{color: '#ED4E54FF', fontWeight: '500'}}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal> */}
         </Portal>
     </SafeAreaView>
 
